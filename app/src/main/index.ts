@@ -209,7 +209,6 @@ const initializeApp = async () => {
   await setupAdblocker()
   
   // Initialize i18n before setting app menu
-  const userConfig = getUserConfig()
   initI18n(userConfig.settings.language as any)
   
   setAppMenu()
