@@ -6,7 +6,7 @@
   const dispatch = createEventDispatcher<{ update: string }>()
 
   // they wouldnt let me keep gmail in here :')
-  const AVAILABLE_ENGINES = ['google', 'duckduckgo', 'ecosia', 'brave', 'perplexity', 'kagi'].map(
+  const AVAILABLE_ENGINES = ['bocha', 'google', 'duckduckgo', 'ecosia', 'brave', 'perplexity', 'kagi'].map(
     (key) => SEARCH_ENGINES.filter((e) => e.key === key).at(0)
   )
 </script>

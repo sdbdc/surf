@@ -1,4 +1,4 @@
-export const DEFAULT_SEARCH_ENGINE = 'google'
+export const DEFAULT_SEARCH_ENGINE = 'bocha'
 export const SEARCH_ENGINES: {
   key: string
   title: string
@@ -6,6 +6,12 @@ export const SEARCH_ENGINES: {
   getUrl: (query: string) => string
   getCompletions?: (query: string) => Promise<string[]>
 }[] = [
+  {
+    key: 'bocha',
+    title: 'Search with Bocha',
+    shortcuts: ['bocha'],
+    getUrl: (query: string) => `https://bochaai.com/search?q=${query}`
+  },
   {
     key: 'google',
     title: 'Search with Google',
