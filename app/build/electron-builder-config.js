@@ -57,7 +57,9 @@ function electronBuilderConfig() {
       include: 'build/installer.nsh',
       perMachine: true,
       allowElevation: true,
-      deleteAppDataOnUninstall: false
+      deleteAppDataOnUninstall: false,
+      allowToChangeInstallationDirectory: true,
+      oneClick: false
     },
     mac: {
       identity: null, // this skips code signing
