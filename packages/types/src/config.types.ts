@@ -28,6 +28,7 @@ export type UserSettings = {
   cleanup_filenames: boolean
   save_to_active_context: boolean
   search_engine: string
+  bocha_api_key?: string
   onboarding: {
     completed_welcome: boolean
     completed_welcome_v2: boolean

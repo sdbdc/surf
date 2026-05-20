@@ -15,6 +15,7 @@
   import SettingsOption from './components/SettingsOption.svelte'
   import DefaultSearchEnginePicker from './components/DefaultSearchEnginePicker.svelte'
   import LanguagePicker from './components/LanguagePicker.svelte'
+  import BochaApiKeyInput from './components/BochaApiKeyInput.svelte'
   import TeletypeDefaultActionPicker from './components/TeletypeDefaultActionPicker.svelte'
   import AppStylePicker from './components/AppStylePicker.svelte'
   import ModelSettings, { type ModelUpdate } from './components/ModelSettings.svelte'
@@ -304,29 +305,38 @@
           <p bind:this={migrationOutput}></p>
         </div>
         {#if userConfigSettings}
-        <div class="dark-mode-wrapper">
-          <SettingsOption
-            icon="moon"
-            title="Dark Mode"
-            description="Enable dark appearance for the application."
-            bind:value={isDarkMode}
-            on:update={handleDarkModeToggle}
-          />
-        </div>
+          <div class="dark-mode-wrapper">
+            <SettingsOption
+              icon="moon"
+              title="Dark Mode"
+              description="Enable dark appearance for the application."
+              bind:value={isDarkMode}
+              on:update={handleDarkModeToggle}
+            />
+          </div>
 
-        <div class="language-wrapper">
-          <LanguagePicker
-            bind:value={userConfigSettings.language}
-            on:update={() => handleSettingsUpdate()}
-          />
-        </div>
+          <div class="language-wrapper">
+            <LanguagePicker
+              bind:value={userConfigSettings.language}
+              on:update={() => handleSettingsUpdate()}
+            />
+          </div>
 
-        <div class="search-wrapper">
+          <div class="search-wrapper">
             <DefaultSearchEnginePicker
               bind:value={userConfigSettings.search_engine}
               on:update={() => handleSettingsUpdate()}
             />
           </div>
+
+          {#if userConfigSettings.search_engine === 'bocha'}
+            <div class="bocha-api-key-wrapper">
+              <BochaApiKeyInput
+                bind:value={userConfigSettings.bocha_api_key}
+                on:update={() => handleSettingsUpdate()}
+              />
+            </div>
+          {/if}
 
           <div class="teletype-wrapper">
             <TeletypeDefaultActionPicker
@@ -791,6 +801,7 @@
 
   .dev-wrapper,
   .search-wrapper,
+  .bocha-api-key-wrapper,
   .teletype-wrapper,
   .dark-mode-wrapper,
   .language-wrapper {

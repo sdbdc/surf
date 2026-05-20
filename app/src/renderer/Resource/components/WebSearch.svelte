@@ -7,6 +7,7 @@
   import HeadlessCitationItem from './HeadlessCitationItem.svelte'
   import { Icon } from '@deta/icons'
   import type { LinkClickHandler } from '@deta/editor/src/lib/extensions/Link/helpers/clickHandler'
+  import type { UserSettings } from '@deta/types'
 
   // NOTE: created by tiptap but not needed
   export const node: any = undefined
@@ -26,33 +27,26 @@
   export let limit: number = 5
 
   const log = useLogScope('WebSearch Component')
-  
-  // 搜索引擎配置 - 默认使用 DuckDuckGo，可配置为博查 API
-  interface SearchEngineConfig {
-    engine: 'duckduckgo' | 'bocha'
-    apiKey?: string
-  }
-  
-  // 从环境变量或配置中读取搜索引擎设置
-  const searchEngineConfig: SearchEngineConfig = {
-    engine: 'duckduckgo', // 默认使用 DuckDuckGo
-    apiKey: undefined
-  }
-  
-  // 根据配置初始化搜索引擎
+
   let searchAPI: DuckDuckGoAPI | BochaSearchAPI
-  
-  if (searchEngineConfig.engine === 'bocha') {
-    const bochaConfig: BochaSearchConfig = {
-      apiKey: searchEngineConfig.apiKey || '',
-      baseUrl: 'https://api.bochaai.com/api/v1/web-search',
-      country: 'CN',
-      language: 'zh-CN'
+
+  function initializeSearchAPI(settings: UserSettings) {
+    const engine = settings.search_engine || 'duckduckgo'
+    if (engine === 'bocha') {
+      const bochaConfig: BochaSearchConfig = {
+        apiKey: settings.bocha_api_key || '',
+        baseUrl: 'https://api.bochaai.com/api/v1/web-search',
+        country: 'CN',
+        language: settings.language === 'zh-CN' ? 'zh-CN' : 'en-US'
+      }
+      searchAPI = new BochaSearchAPI(bochaConfig)
+    } else {
+      searchAPI = new DuckDuckGoAPI()
     }
-    searchAPI = new BochaSearchAPI(bochaConfig)
-  } else {
-    searchAPI = new DuckDuckGoAPI()
   }
+
+  // Initialize with default, will be updated on mount
+  searchAPI = new DuckDuckGoAPI()
 
   type ErrorType = 'search_error' | 'initialization' | 'network'
 
@@ -192,12 +186,16 @@
 
   onMount(async () => {
     try {
+      const settings = await window.api.getUserConfigSettings()
+      initializeSearchAPI(settings)
+
       log.debug('mounted with props:', {
         query,
         results,
         done,
         limit,
-        name
+        name,
+        searchEngine: settings.search_engine
       })
       await tick()
       clearError()
