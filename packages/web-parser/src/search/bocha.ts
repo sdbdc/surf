@@ -24,7 +24,7 @@ export class BochaSearchAPI {
 
   constructor(config?: BochaSearchConfig) {
     this.apiKey = config?.apiKey || ''
-    this.baseUrl = config?.baseUrl || 'https://api.bochaai.com/api/v1/web-search'
+    this.baseUrl = config?.baseUrl || 'https://api.bocha.cn/v1/web-search'
     this.country = config?.country || 'CN'
     this.language = config?.language || 'zh-CN'
   }
@@ -47,7 +47,7 @@ export class BochaSearchAPI {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`
+          Authorization: `Bearer ${this.apiKey}`
         },
         body: JSON.stringify({
           query: query,
@@ -62,10 +62,10 @@ export class BochaSearchAPI {
       }
 
       const data = await response.json()
-      
+
       // 解析博查 API 返回的搜索结果
       const results: SearchResultLink[] = []
-      
+
       if (data.data && Array.isArray(data.data.webPages)) {
         for (const page of data.data.webPages.value || data.data.webPages) {
           results.push({
@@ -107,7 +107,7 @@ export class BochaSearchAPI {
     links.forEach((link) => {
       const title = link.textContent?.trim() || ''
       const url = (link as HTMLAnchorElement).href || ''
-      
+
       if (title && url) {
         results.push({ title, url })
       }

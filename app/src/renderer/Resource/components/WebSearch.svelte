@@ -35,7 +35,7 @@
     if (engine === 'bocha') {
       const bochaConfig: BochaSearchConfig = {
         apiKey: settings.bocha_api_key || '',
-        baseUrl: 'https://api.bochaai.com/api/v1/web-search',
+        baseUrl: 'https://api.bocha.cn/v1/web-search',
         country: 'CN',
         language: settings.language === 'zh-CN' ? 'zh-CN' : 'en-US'
       }
